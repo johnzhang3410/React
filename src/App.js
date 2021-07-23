@@ -7,6 +7,9 @@ import { useState } from 'react'
 import AddTask from './components/AddTask'
 
 function App() {
+const [showAddTask, setShowAddTask] = useState (false)
+//initial state of showing the form to add task is set to false (form doesn't show)
+
   const [tasks, setTasks] = useState([
     {
         id: 1,
@@ -29,6 +32,16 @@ function App() {
     ])
   //useState takes in the initial states, tasks is the current state, and setTasks is the function that updates tasks
 
+//Add Task
+const addTask = (task) => {
+  const id = Math.floor(Math.random() * 10000) + 1
+
+  const newTask = {id, ...task}
+  setTasks([...tasks, newTask])
+}
+//inputs of task, day and reminder plus the new random task id creates the newTask
+//we then use setTasks to concatenate existing tasks with the newTask
+
 //Delete Task
 const deleteTask = (id) => {
   setTasks(tasks.filter((task) => task.id !== id))
@@ -49,10 +62,12 @@ const toggleReminder = (id) => {
 
   return (
     <div className="container">
-      <Header />
+      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
       {/*props can be defined within its component (Ex. title={1} or title='String' ), defaultProps will appear if not specified */}
       {/*The component Header contains the header which is made up of a title as well as a button component */}
-      <AddTask />
+      {/*onAdd in the header passes in a function to the header which sets showAddTask to the opposite of what it has now */}
+      {showAddTask && <AddTask onAdd={addTask} /> }
+      {/*if showAddTask is true, then we show AddTask which returns a form requiring inputs of text, day and reminder*/}
       {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />  : 'No tasks to show'}
       {/*current state tasks array gets passed down as parameter into Tasks.js and the array get looped displaying all the texts */}
       {/*The function deleteTask gets passed down as parameter onDelete to Tasks.js which gets further passed down to Task.js */}

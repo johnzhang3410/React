@@ -2,20 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from './Button'
 
-const Header = ({title}) => {
-    const onClick = () => {
-        console.log('click')
-    }
-
+const Header = ({title, onAdd, showAdd}) => {
     return (
         <header className='header'>
             <h1>{title}</h1>
             {/*can pass in headingStyle by <h1 style={StyleName}></h1> or by {{styles}} straight into JSX*/}
-            <Button color='green' text='Add' onClick={onClick} />
+            <Button color={showAdd ? 'red' : 'green'} text={showAdd ? 'Close' : 'Add'} onClick={onAdd} />
         </header>
     )
 }
 //Functional Component
+//when the button gets clicked, we call the prop onAdd which calls the function to set the form show hide state to the opposite of current state
+//when showAdd is true (add form is displayed), button text says close, else it says add
 
 Header.defaultProps = {
     title: 'Task Tracker'
